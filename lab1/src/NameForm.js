@@ -39,6 +39,7 @@ class NameForm extends React.Component {
   }
 
   handleChange(event) {
+    // this.setState({value: event.target.value});
     let field = this.state.field;
     field[event.target.name] = event.target.value;
     this.setState({
@@ -48,9 +49,17 @@ class NameForm extends React.Component {
 
   handleSubmit(event) {
     event.preventDefault();
+    // if (/[A-Za-z]*$/.test(this.state.value)) {
+    //   this.setState({nameAvailable:true});
+    // }
+    // else {
+    //   this.setState({isValid:false});
+    // }
+
     if (this.validateForm()) {
       let field = {};
       field["name"] = "";
+      // this.setState({nameAvailable:true});
       this.setState({field:field});
       alert('Hello, ' + this.state.field.name + '!');
     }
@@ -61,16 +70,21 @@ class NameForm extends React.Component {
       color: 'red'
     };
 
+    let returnArray
+    // if (!this.state.nameAvailable) {
+    //   returnArray.push();
+    // }
+
     return (
       <form onSubmit={this.handleSubmit}>
         <label>
           Name:
           <input type="text" name="name" value={this.state.field.name} onChange={this.handleChange} />
-          <div style={style}>
-            {this.state.error.name}
-          </div>
         </label>
         <input type="submit" value="Submit" />
+        <div style={style}>
+            {this.state.error.name}
+          </div>
       </form>
     );
   }
