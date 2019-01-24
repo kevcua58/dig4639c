@@ -83,8 +83,8 @@ class NameForm extends React.Component {
         </label>
         <input type="submit" value="Submit" />
         <div style={style}>
-            {this.state.error.name}
-          </div>
+          {this.state.error.name}
+        </div>
       </form>
     );
   }
