@@ -66,11 +66,11 @@ class NameForm extends React.Component {
         <label>
           Name:
           <input type="text" name="name" value={this.state.field.name} onChange={this.handleChange} />
-          <div style={style}>
-            {this.state.error.name}
-          </div>
         </label>
         <input type="submit" value="Submit" />
+        <div style={style}>
+          {this.state.error.name}
+        </div>
       </form>
     );
   }
