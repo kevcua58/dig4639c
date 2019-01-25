@@ -56,10 +56,6 @@ class NameForm extends React.Component {
   }
 
   render() {
-    const style = {
-      color: 'red'
-    };
-
     return (
       <form onSubmit={this.handleSubmit}>
         <label>
@@ -67,7 +63,7 @@ class NameForm extends React.Component {
           <input type="text" name="name" value={this.state.field.name} onChange={this.handleChange} />
         </label>
         <input type="submit" value="Submit" />
-        <div style={style}>
+        <div class="errorText">
           {this.state.error.name}
         </div>
       </form>
