@@ -39,12 +39,9 @@ class NameForm extends React.Component {
   }
 
   handleChange(event) {
-    // this.setState({value: event.target.value});
     let field = this.state.field;
     field[event.target.name] = event.target.value;
-    this.setState({
-      field
-    });
+    this.setState({field});
   }
 
   handleSubmit(event) {
