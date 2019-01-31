@@ -74,19 +74,28 @@ class NameForm extends React.Component {
 
     return (
       <div>
-        <form onSubmit={this.handleSubmit}>
+      {(!this.state.validForm)
+      ?
+      <form onSubmit={this.handleSubmit}>
           <label>
             Name:
             <input type="text" name="name" value={this.state.field.name} onChange={this.handleChange} />
           </label>
           <input type="submit" value="Submit" />
         </form>
-        <div class="greetingText">
+      :
+      (<div class="greetingText">
           {this.state.greeting.name}
-        </div>
-        <div class="errorText">
+        </div>)
+      }
+        {(false)
+        ?
+        null
+        :
+        (<div class="errorText">
           {this.state.error.name}
-        </div>
+        </div>)
+      }
       </div>
     );
   }
