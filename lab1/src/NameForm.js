@@ -5,7 +5,9 @@ class NameForm extends React.Component {
     super(props);
     this.state = {
       field: {},
-      error: {}
+      error: {},
+      greeting: {},
+      validForm: false,
     }
 
     this.handleChange = this.handleChange.bind(this);
@@ -41,7 +43,7 @@ class NameForm extends React.Component {
   handleChange(event) {
     let field = this.state.field;
     field[event.target.name] = event.target.value;
-    this.setState({field});
+    this.setState({field:field});
   }
 
   handleSubmit(event) {
@@ -49,26 +51,53 @@ class NameForm extends React.Component {
 
     if (this.validateForm()) {
       let field = {};
+      let greeting = {};
       field["name"] = "";
       this.setState({field:field});
-      alert('Hello, ' + this.state.field.name + '!');
+      greeting["name"] = "Hello, " + this.state.field.name + "!";
+      this.setState({greeting:greeting});
+      this.setState({validForm: true});
     }
   }
 
   render() {
+    // const validForm = this.state.validForm;
+    // let greeting;
+    // let error;
+
+    // if (validForm) {
+    //   greeting = <div class="greetingText">{this.state.greeting.name}</div>;
+    // }
+    // else {
+    //   error = <div class="errorText">{this.state.error.name}</div>;
+    // }
+
     return (
-      <form onSubmit={this.handleSubmit}>
-        <label>
-          Name:
-          <input type="text" name="name" value={this.state.field.name} onChange={this.handleChange} />
-        </label>
-        <input type="submit" value="Submit" />
+      <div>
+        <form onSubmit={this.handleSubmit}>
+          <label>
+            Name:
+            <input type="text" name="name" value={this.state.field.name} onChange={this.handleChange} />
+          </label>
+          <input type="submit" value="Submit" />
+        </form>
+        <div class="greetingText">
+          {this.state.greeting.name}
+        </div>
         <div class="errorText">
           {this.state.error.name}
         </div>
-      </form>
+      </div>
     );
   }
+}
+
+function Greeting(props) {
+  const validForm = props.validForm;
+  if (validForm) {
+    return <div class="greetingText">{this.state.greeting.name}</div>;
+  }
+  return <div class="errorText">{this.state.error.name}</div>;
 }
 
 export default NameForm;

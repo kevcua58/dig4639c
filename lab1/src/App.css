@@ -31,6 +31,10 @@
   }
 }
 
+.greetingText {
+  color: green;
+}
+
 .errorText {
   color: red;
 }
