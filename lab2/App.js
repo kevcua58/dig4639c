@@ -68,7 +68,7 @@ export default class App extends React.Component {
     return (
       <View style={styles.container} flexDirection="column" alignItems="stretch">
         <View>
-          <TextInput style={styles.textInput} name="name" value={this.state.field.name} onChangeText={this.onChange} placeholder="Name">
+          <TextInput style={styles.textInput} value={this.state.field.name} onChangeText={this.onChange} placeholder="Name">
           </TextInput>
         </View>
         <TouchableOpacity style={styles.buttonStyle} onPress={this.onPress}>

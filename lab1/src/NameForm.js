@@ -61,52 +61,34 @@ class NameForm extends React.Component {
   }
 
   render() {
-    // const validForm = this.state.validForm;
-    // let greeting;
-    // let error;
-
-    // if (validForm) {
-    //   greeting = <div class="greetingText">{this.state.greeting.name}</div>;
-    // }
-    // else {
-    //   error = <div class="errorText">{this.state.error.name}</div>;
-    // }
-
     return (
       <div>
-      {(!this.state.validForm)
-      ?
-      <form onSubmit={this.handleSubmit}>
+        {(!this.state.validForm)
+        ?
+        <form onSubmit={this.handleSubmit}>
           <label>
             Name:
             <input type="text" name="name" value={this.state.field.name} onChange={this.handleChange} />
           </label>
           <input type="submit" value="Submit" />
         </form>
-      :
-      (<div class="greetingText">
+        :
+        (<div class="greetingText">
           {this.state.greeting.name}
         </div>)
-      }
-        {(false)
+        }
+
+        {(this.state.validForm)
         ?
         null
         :
         (<div class="errorText">
           {this.state.error.name}
         </div>)
-      }
+        }
       </div>
     );
   }
-}
-
-function Greeting(props) {
-  const validForm = props.validForm;
-  if (validForm) {
-    return <div class="greetingText">{this.state.greeting.name}</div>;
-  }
-  return <div class="errorText">{this.state.error.name}</div>;
 }
 
 export default NameForm;
