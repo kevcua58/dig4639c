@@ -43,7 +43,7 @@ export default class App extends React.Component {
   onChange(event) {
     let field = this.state.field;
     field[event.target.name] = event.target.value;
-    this.setState({field});
+    this.setState({field:field});
 
     console.log(event);
   }
@@ -61,24 +61,34 @@ export default class App extends React.Component {
       this.setState({validForm: true});
     }
 
-    console.log(this.state.field.name);
+    console.log("Pressed");
   }
 
   render() {
     return (
       <View style={styles.container} flexDirection="column" alignItems="stretch">
         <View>
-          <TextInput style={styles.textInput} value={this.state.field.name} onChangeText={this.onChange} placeholder="Name">
-          </TextInput>
+          {(!this.state.validForm)
+          ?
+          <View>
+            <TextInput style={styles.textInput} name="name" value={this.state.field.name} onChangeText={this.onChange} placeholder="Enter your name">
+            </TextInput>
+            <TouchableOpacity style={styles.buttonStyle} onPress={this.onPress}>
+              <Text style={styles.buttonText}>Submit</Text>
+            </TouchableOpacity>
+          </View>
+          :
+          (<Text style={styles.greetingText}>{this.state.greeting.name}</Text>)
+          }
         </View>
-        <TouchableOpacity style={styles.buttonStyle} onPress={this.onPress}>
-          <Text style={styles.buttonText}>Submit</Text>
-        </TouchableOpacity>
+
         <View>
-          <Text style={styles.greetingText}>{this.state.greeting.name}</Text>
-        </View>
-        <View>
-            <Text style={styles.errorText}>{this.state.error.name}</Text>
+          {(this.state.validForm)
+          ?
+          null
+          :
+          (<Text style={styles.errorText}>{this.state.error.name}</Text>)
+          }
         </View>
       </View>
     );
@@ -93,10 +103,13 @@ const styles = StyleSheet.create({
 
   greetingText: {
     color: "green",
+    fontSize: 30
   },
 
   errorText: {
     color: "red",
+    fontSize: 25,
+    marginLeft: 30
   },
 
   buttonStyle: {
