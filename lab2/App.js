@@ -5,7 +5,7 @@ export default class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      field: {name: ''},
+      field: {},
       error: {},
       greeting: {},
       validForm: false,
@@ -71,7 +71,7 @@ export default class App extends React.Component {
           {(!this.state.validForm)
           ?
           <View>
-            <TextInput style={styles.textInput} name="name" value={this.state.field.name} onChangeText={(text) => this.setState({field: text})} placeholder="Enter your name">
+            <TextInput style={styles.textInput} name="name" value={this.state.field.name} onChangeText={(field) => this.setState({field})} placeholder="Enter your name">
             </TextInput>
             <TouchableOpacity style={styles.buttonStyle} onPress={this.onPress}>
               <Text style={styles.buttonText}>Submit</Text>
