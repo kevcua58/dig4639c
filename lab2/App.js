@@ -40,13 +40,9 @@ export default class App extends React.Component {
     return validForm;
   }
 
-  onChange(event) {
-    let field = this.state.field;
-    field[event.target.name] = event.target.value;
-    this.setState({field:field});
-
-    console.log(event);
-  }
+  onChange(name) {
+    this.state.field.name = name;
+    }
 
   onPress(event) {
     event.preventDefault();
@@ -55,10 +51,13 @@ export default class App extends React.Component {
       let field = {};
       let greeting = {};
       field["name"] = "";
-      this.setState({field:field});
       greeting["name"] = "Hello, " + this.state.field.name + "!";
-      this.setState({greeting:greeting});
-      this.setState({validForm: true});
+      this.setState({
+        field:field,
+        greeting:greeting,
+        validForm: true
+      });
+
     }
 
     console.log("Pressed");
@@ -71,7 +70,7 @@ export default class App extends React.Component {
           {(!this.state.validForm)
           ?
           <View>
-            <TextInput style={styles.textInput} name="name" value={this.state.field.name} onChangeText={(field) => this.setState({field})} placeholder="Enter your name">
+            <TextInput style={styles.textInput} name="name" onChangeText={this.onChange} placeholder="Enter your name">
             </TextInput>
             <TouchableOpacity style={styles.buttonStyle} onPress={this.onPress}>
               <Text style={styles.buttonText}>Submit</Text>
@@ -103,7 +102,8 @@ const styles = StyleSheet.create({
 
   greetingText: {
     color: "green",
-    fontSize: 30
+    fontSize: 30,
+    margin: 100,
   },
 
   errorText: {
@@ -134,6 +134,5 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#fff',
     alignItems: 'center',
-    justifyContent: 'center',
   },
 });
