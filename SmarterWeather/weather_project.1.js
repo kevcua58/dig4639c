@@ -25,137 +25,9 @@ import OpenWeatherMap from "./open_weather_map";
 class WeatherProject extends Component {
   constructor(props) {
     super(props);
-    this.state = { forecast: null };
+    this.state = { forecast: null, currentTime: null };
   }
-  
-  doCallbackWork = () => {
-    function always() {
-      console.log('I am always executed! error or success');
-    }
-    this.fooCallbacks(function() {
-      always();
-    }, function() {
-      always();
-    });
-  }
-  fooCallbacks = (cb) => {
-    callback = (cb2, input, err) => {
-      console.log("Called at " + Date.now());
-      setTimeout(() => {
-        console.log("finished at "+ Date.now());
-        cb2(this.promiseNumber++);
-      },200*input);
-    }
-    callback(function(res, err) {
-      console.log(res + ': 1');
-      callback(function(res, err) {
-        console.log(res + ': 2');
-        callback(function(res, err) {
-          console.log(res + ': 3');
-          cb();
-        }, 1)
-      }, 2)
-    }, 5);
-  }
-  
-  doCallbackWork1 = () => {
-    function always() {
-      console.log('I am always executed! error or success');
-    }
-    this.fooCallbacks2(function() {
-      always();
-    }, function() {
-      always();
-    });
-  }
-
-  fooCallbacks2 = (cb) => {
-    let callback1 = (input) => {
-      console.log("Called at " + Date.now());
-      setTimeout(() => {
-        console.log("My " + input + " job finished at "+ Date.now());
-        callback2(2);
-      },200*input);
-    }
-    let callback2 = (input) => {
-      console.log("Called at " + Date.now());
-      setTimeout(() => {
-        console.log("My " + input + " job finished at "+ Date.now());
-        callback3(3);
-      },200*input);
-    }
-    let callback3 = (input) => {
-      console.log("Called at " + Date.now());
-      setTimeout(() => {
-        console.log("My " + input + " job finished at "+ Date.now());
-      },200*input);
-    }
-    callback1(1);
-  }
-
-  doAsyncWork = () => {
-    let promise = this.foo()
-    promise.then(function(fooResult) {
-      console.log(fooResult); // fooResult should be what is returned by doSomething3()
-    })
-    .catch(function(err) {
-      console.error(err); // Can be thrown by any 
-    })
-    .done(function() {
-      console.log('I am always executed! error or success');
-    });
-  }
-
-  promiseNumber = 0;
-  doSomething = (input) => {
-    return new Promise((resolve, reject) => {
-      console.log("Called at " + Date.now());
-      setTimeout(() => {
-        console.log("finished at "+ Date.now());
-        resolve(this.promiseNumber++);
-      },200*input);
-    });
-  }
-
-  fooAwait = async() => {
-        doSomethingResult = await this.doSomething(0);
-        console.log(doSomethingResult + ': 1');
-        doSomething1Result = await this.doSomething(1);
-        console.log(doSomething1Result + ': 2');
-        doSomething2Result = await this.doSomething(2);
-        console.log(doSomething2Result + ': 3');
-        return this.doSomething(3);
-      }
-
-  foo = () => {
-    return this.doSomething(0)
-      .then((doSomethingResult) => {
-        console.log(doSomethingResult + ': 1');
-        return this.doSomething(1);
-      })
-      .then((doSomething1Result) => {
-        console.log(doSomething1Result + ': 2');
-        return this.doSomething(2);
-      })
-      .then((doSomething2Result) => {
-        console.log(doSomething2Result + ': 3');
-        return this.doSomething(3);
-      });
-  }
-  doAsyncWork2 = () => {
-    this.fooAwait()
-    .then(function(fooResult) {
-      console.log(fooResult); // fooResult should be what is returned by doSomething3()
-    })
-    .catch(function(err) {
-      console.error(err); // Can be thrown by any 
-    })
-    .done(function() {
-      console.log('I am always executed! error or success');
-    });
-  }
-
-    
+ 
   checkMultiPermissions = async() => {
     const { Permissions, FileSystem } = Expo;
     console.log(FileSystem.documentDirectory);
@@ -191,7 +63,8 @@ class WeatherProject extends Component {
           }
       }
       
-  }      
+  }     
+
   _retrieveData = async () => {
       console.log("Retrieving Data");
         try {
@@ -210,6 +83,39 @@ class WeatherProject extends Component {
         }
       }
 
+  getCurrentTime = () => {
+    let hr = new Date().getHours();
+    let min = new Date().getMinutes();
+    let sec = new Date().getSeconds();
+    let am_pm = 'pm';
+
+    if (hr > 12) {
+      hr = hr - 12;
+    }
+    if (hr == 0) {
+      hr = 12;
+    }
+    if (min < 10) {
+      min = '0' + min;
+    }
+    if (sec < 10) {
+      sec = '0' + sec;
+    }
+    if (new Date().getHours() < 12) {
+      am_pm = 'am';
+    }
+
+    this.setState({ currentTime: hr + ':' + min + ':' + sec + ' ' + am_pm});
+  }
+
+  componentWillMount() {
+    this.getCurrentTime();
+  }
+
+  componentWillUnmount() {
+    clearInterval(this.timer);
+  }
+
   componentDidMount() {
     AsyncStorage
       .getItem(STORAGE_KEY)
@@ -221,6 +127,10 @@ class WeatherProject extends Component {
       .catch(error => console.error("AsyncStorage error: " + error.message))
       .done();
       this._retrieveData();
+
+      this.timer = setInterval(() => {
+        this.getCurrentTime();
+      }, 1000);
   }
 
   _getForecastForZip = zip => {
@@ -280,32 +190,23 @@ class WeatherProject extends Component {
           <View style={styles.row}>
             <LocationButton onGetCoords={this._getForecastForCoords} />
           </View>
-          <View style={styles.row}>
-            <Button onPress={this.checkMultiPermissions} label="Choose Image"></Button>
-          </View>
-          <View style={styles.row}>
-            <Button onPress={this.doAsyncWork} label="Do Async Work"></Button>
-          </View>
-          <View style={styles.row}>
-            <Button onPress={this.doAsyncWork2} label="Do Async Work"></Button>
-          </View>
-          <View style={styles.row}>
-            <Button onPress={this.doCallbackWork1} label="Callbacks 2"></Button>
-          </View>
-          <View style={styles.row}>
-            <Button onPress={this.doCallbackWork} label="Callbacks"></Button>
-          </View>
 
           {content}
 
+          <View style={styles.row}>
+            <Text style={styles.timeText}>{this.state.currentTime}</Text>
+          </View>
         </View>
+        <View style={styles.row}>
+            <Button onPress={this.checkMultiPermissions} label="Choose Image"></Button>
+          </View>
       </PhotoBackdrop>
     );
   }
 }
 
 const styles = StyleSheet.create({
-  overlay: { backgroundColor: "rgba(0,0,0,0.1)" },
+  overlay: { backgroundColor: "rgba(0,0,0,0.3)" },
   row: {
     flexDirection: "row",
     flexWrap: "nowrap",
@@ -322,7 +223,11 @@ const styles = StyleSheet.create({
     height: textStyles.baseFontSize * 2,
     justifyContent: "flex-end"
   },
-  zipCode: { flex: 1 }
+  zipCode: { flex: 1 },
+  timeText: {
+    fontSize: 40,
+    color: "white"
+  }
 });
 
 export default WeatherProject;

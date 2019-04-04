@@ -6,7 +6,7 @@ class Forecast extends Component {
   render() {
     return (
       <View style={styles.forecast}>
-        <Text style={{ color: "#FFFFFF", fontSize: 72 }}>
+        <Text style={{ color: "#FFFFFF", fontSize: 65 }}>
           {this.props.temp}°F
         </Text>
         <Text style={{ color: "#FFFFFF", fontSize: 32 }}>
