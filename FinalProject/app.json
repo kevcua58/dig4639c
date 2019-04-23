@@ -23,7 +23,11 @@
       "**/*"
     ],
     "ios": {
-      "supportsTablet": true
+    	"bundleIdentifier": "com.sippedsense",
+      	"supportsTablet": true
+    },
+    "android": {
+    	"package": "com.sippedsense"
     }
   }
 }
